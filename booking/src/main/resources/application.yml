@@ -35,6 +35,9 @@ logging:
   level:
     org.hibernate.type: trace
     org.springframework.cloud: debug
+prop:
+  aprv:
+    url: http://localhost:8082
 server:
   port: 8081
 ---
@@ -62,3 +65,6 @@ spring:
         event-out:
           destination: booking
           contentType: application/json
+prop:
+  aprv:
+    url: ${apiurl}
