@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: booking-configmap
+    namespace: booking
+data:
+    apiurl: "http://user22-gateway:8080"
