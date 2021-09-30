@@ -104,6 +104,6 @@ phases:
                       failureThreshold: 5
           EOF
 
-cache:
-  paths:
-    - '/root/.m2/**/*'
+#cache:
+#  paths:
+#    - '/root/.m2/**/*'
