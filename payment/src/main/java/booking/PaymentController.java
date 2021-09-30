@@ -24,7 +24,7 @@ import java.util.Optional;
   PaymentRepository paymentRepository;
 
   @PostMapping(value = "/approvePay")
-  public boolean approvePay(@RequestBody Map<String, String> param) {
+  public void approvePay(@RequestBody Map<String, String> param) {
 
    Payment payment = new Payment();
    boolean result = false;
