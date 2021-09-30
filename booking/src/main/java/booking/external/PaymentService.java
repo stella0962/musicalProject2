@@ -25,7 +25,7 @@ import java.util.Date;
 @FeignClient(name="payment", url="${prop.aprv.url}") //, configuration=PaymentService.PaymentServiceConfiguration.class, fallback=PaymentServiceFallback.class)
 public interface PaymentService {
     @RequestMapping(method= RequestMethod.POST, path="/payments")
-    public void approvePay(@RequestBody Payment payment);
+    public boolean approvePay(@RequestBody Payment payment);
 
 /*
     @Component
