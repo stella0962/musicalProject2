@@ -60,7 +60,7 @@ phases:
             name: payment
             namespace: booking
             labels:
-              app: delivery
+              app: payment
           spec:
             replicas: 1
             selector:
