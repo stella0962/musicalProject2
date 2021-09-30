@@ -1151,7 +1151,36 @@ Shortest transaction:           0.00
 ![image](https://user-images.githubusercontent.com/20183369/133556797-6f6a5dc9-e105-4a04-9aaf-50722f5438c0.png)
 
 
+## ConfigMap
 
+configmap 생성하여 
+kubectl apply -f configmap 
 
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: booking-configmap
+    namespace: booking
+data:
+    apiurl: "http://user22-gateway:8080"
+```
+
+buildspec.yaml 셋팅
+
+```
+              spec:
+                containers:
+                  - name: booking
+                    image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+                    ports:
+                      - containerPort: 8080
+                    env:
+                    - name: apiurl
+                      valueFrom:
+                        configMapKeyRef:
+                          name: booking-configmap
+                          key: apiurl 
+```
 
 
