@@ -6,6 +6,9 @@ env:
 
 phases:
   install:
+    runtime-versions:
+      java: corretto8
+      docker: 18
     commands:
       - echo install kubectl
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -25,6 +28,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - cd delivery
       - mvn package -Dmaven.test.skip=true
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
   post_build:
