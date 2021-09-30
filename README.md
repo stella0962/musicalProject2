@@ -906,14 +906,17 @@ phases:
 #    - '/root/.m2/**/*'
 ``` 
 
-- booking 서비스 배포 
+- 전체 서비스 배포 
 
 ![image](https://user-images.githubusercontent.com/20183369/135397111-c3cbcb29-11f7-4e45-8a83-8ec041d33566.png)
  
-- booking 서비스 배포 진행 단계 
+- 전체 서비스 배포 진행 단계 
 
 ![image](https://user-images.githubusercontent.com/20183369/135390575-233395c0-a542-446e-87cd-ef25d71ca628.png)
 
+- booking 서비스 확인
+
+![image](https://user-images.githubusercontent.com/20183369/135397683-d05451a7-17c4-4b26-9271-6da82053f65a.png)
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
