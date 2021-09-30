@@ -4,4 +4,4 @@ metadata:
     name: booking-configmap
     namespace: booking
 data:
-    apiurl: "http://user22-payment:8080"
+    apiurl: "http://payment:8080"
