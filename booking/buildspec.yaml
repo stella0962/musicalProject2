@@ -95,7 +95,7 @@ phases:
                       initialDelaySeconds: 180
                       timeoutSeconds: 2
                       periodSeconds: 5
-                      failureThreshold: 5d
+                      failureThreshold: 5
           EOF
 
 #cache:
