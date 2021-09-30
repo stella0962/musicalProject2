@@ -1153,9 +1153,8 @@ Shortest transaction:           0.00
 
 ## ConfigMap
 
-configmap 생성하여 
-kubectl apply -f configmap 
-
+- configmap 생성하여 
+kubectl apply -f configmap -n booking
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -1163,11 +1162,10 @@ metadata:
     name: booking-configmap
     namespace: booking
 data:
-    apiurl: "http://user22-gateway:8080"
+    apiurl: "http://payment:8080"
 ```
 
-buildspec.yaml 셋팅
-
+- buildspec.yaml 셋팅
 ```
               spec:
                 containers:
@@ -1183,4 +1181,36 @@ buildspec.yaml 셋팅
                           key: apiurl 
 ```
 
+- application.yaml 셋팅
+```
+prop:
+  aprv:
+    url: ${apiurl}
+```
+- kubectl describe pod/booking-86bfb4fc7f-2kxwc -n booking
+```
+root@labs--1458967541:/home/project# kubectl describe pod/booking-86bfb4fc7f-2kxwc -n booking
+
+Containers:
+  booking:
+    Container ID:   docker://06c4892fa54c5ff7e080af30f12268465866db0c23917e17a814b6e77c40e5bc
+    Image:          879772956301.dkr.ecr.ca-central-1.amazonaws.com/user22-booking:d08ac4da38eaa2e3ff4e27b46037447f92bba43d
+    Image ID:       docker-pullable://879772956301.dkr.ecr.ca-central-1.amazonaws.com/user22-booking@sha256:59042cdd440d09954edb02b03f6991cd7ead80df748b35f697cfeb3d34eea4ae
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 30 Sep 2021 11:02:24 +0000
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:8080/bookings delay=180s timeout=2s period=5s #success=1 #failure=5
+    Readiness:      http-get http://:8080/bookings delay=20s timeout=2s period=5s #success=1 #failure=10
+    Environment:
+      apiurl:  <set to the key 'apiurl' of config map 'booking-configmap'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-bgh9m (ro)
+```
+
+- Configmap설정으로 동기호출 SUCCESS
+
+![image](https://user-images.githubusercontent.com/20183369/135444525-4acdcc05-64b1-44b5-884b-e6e1308d2e44.png)
 
