@@ -806,10 +806,13 @@ version: 0.2
 
 env:
   variables:
-    _PROJECT_NAME: "user05-mypage"
+    _PROJECT_NAME: "user22-booking"
 
 phases:
   install:
+    runtime-versions:
+      java: corretto8
+      docker: 18
     commands:
       - echo install kubectl
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -823,12 +826,13 @@ phases:
       - echo $AWS_DEFAULT_REGION
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo start command
-      #- $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - docker login --username AWS -p $(aws ecr get-login-password --region $AWS_DEFAULT_REGION) $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - cd booking
       - mvn package -Dmaven.test.skip=true
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
   post_build:
@@ -845,44 +849,44 @@ phases:
           apiVersion: v1
           kind: Service
           metadata:
-            name: mypage
-            namespace: team05
+            name: booking
+            namespace: booking
             labels:
-              app: mypage
+              app: booking
           spec:
             ports:
               - port: 8080
                 targetPort: 8080
             selector:
-              app: mypage
+              app: booking
           EOF
       - |
           cat  <<EOF | kubectl apply -f -
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: mypage
-            namespace: team05
+            name: booking
+            namespace: booking
             labels:
-              app: mypage
+              app: booking
           spec:
             replicas: 1
             selector:
               matchLabels:
-                app: mypage
+                app: booking
             template:
               metadata:
                 labels:
-                  app: mypage
+                  app: booking
               spec:
                 containers:
-                  - name: mypage
+                  - name: booking
                     image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
                     ports:
                       - containerPort: 8080
                     readinessProbe:
                       httpGet:
-                        path: '/mypages'
+                        path: '/bookings'
                         port: 8080
                       initialDelaySeconds: 20
                       timeoutSeconds: 2
@@ -890,7 +894,7 @@ phases:
                       failureThreshold: 10
                     livenessProbe:
                       httpGet:
-                        path: '/mypages'
+                        path: '/bookings'
                         port: 8080
                       initialDelaySeconds: 180
                       timeoutSeconds: 2
@@ -906,7 +910,7 @@ phases:
 ![image](https://user-images.githubusercontent.com/49930207/133380367-11c931d6-1fe3-43cd-bb83-fb716166fcff.png)
  
 - mypage 서비스 배포 진행 단계 
-![image](https://user-images.githubusercontent.com/49930207/133554065-7f2a9e2f-1d81-4aa4-a550-06073c6054c8.png)
+![image](https://user-images.githubusercontent.com/20183369/135390575-233395c0-a542-446e-87cd-ef25d71ca628.png)
 
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
