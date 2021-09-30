@@ -31,19 +31,6 @@ spring:
         event-out:
           destination: booking
           contentType: application/json
-
-feign:
-  client:
-    url:
-      paymentUrl: http://localhost:8082
-  hystrix:
-    enabled: true
-
-hystrix:
-  command:
-    default:
-      execution.isolation.thread.timeoutInMilliseconds: 610
-
 logging:
   level:
     org.hibernate.type: trace
@@ -75,7 +62,3 @@ spring:
         event-out:
           destination: booking
           contentType: application/json
-feign:
-  client:
-    url:
-      paymentUrl: http://payment:8080
