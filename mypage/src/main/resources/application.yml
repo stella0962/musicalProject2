@@ -2,20 +2,13 @@ server:
   port: 8080
 
 ---
-
 spring:
   profiles: default
   jpa:
-    show_sql: true
-    #format_sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:mariadb://localhost:3306/BookingMypage
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: 1234
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   cloud:
     stream:
       kafka:
