@@ -922,9 +922,9 @@ phases:
 
 * 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함
 
-Class > Payment로 강의신청시 RESTful Request/Response 로 연동하여 구현이 되어있고, 과도할 경우 CB 를 통하여 장애격리.
+Booking > Payment로 강의신청시 RESTful Request/Response 로 연동하여 구현이 되어있고, 과도할 경우 CB 를 통하여 장애격리.
 
-- Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 1000 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
+- Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```
 # application.yml
 
@@ -938,65 +938,36 @@ hystrix:
 ```
 
 * 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
-- 동시사용자 50명
-- 60초 동안 실시
+- 동시사용자 200명
+- 50초 동안 실시
 
 ```
-
-root@siege:/# siege -c50 -t60S -r10 -v --content-type "application/json" 'http://localhost:8081/classes PATCH {"courseId":2}'
-
+root@labs--1458967541:/home/project# kubectl exec -it pod/siege -n booking -c siege -- /bin/bash 
+root@siege:/# siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
 [error] CONFIG conflict: selected time and repetition based testing
-defaulting to time-based testing: 60 seconds
+defaulting to time-based testing: 50 seconds
 ** SIEGE 4.0.4
-** Preparing 50 concurrent users for battle.
+** Preparing 200 concurrent users for battle.
 The server is now under siege...
-
-HTTP/1.1 200     6.09 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.49 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     6.28 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.40 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.58 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-
-
-C/B 발생
-
-
-HTTP/1.1 500     7.07 secs:     208 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 500     3.04 secs:     208 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 500     1.02 secs:     208 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 500     1.03 secs:     208 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 500    30.01 secs:     179 bytes ==> PATCH http://localhost:8081/classes/1
-
-C/B 해제됨
-
-
-HTTP/1.1 200    18.05 secs:     328 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.10 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.22 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 500     4.10 secs:     239 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.40 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-HTTP/1.1 200     5.70 secs:     326 bytes ==> PATCH http://localhost:8081/classes/1
-
-...
-
-Transactions:                   1023 hits
-Availability:                  49.28 %
-Elapsed time:                   8.55 secs
-Data transferred:               0.56 MB
-Response time:                  0.40 secs
-Transaction rate:             119.65 trans/sec
-Throughput:                     0.07 MB/sec
-Concurrency:                   48.30
-Successful transactions:        1023
-Failed transactions:            1053
-Longest transaction:            0.84
-Shortest transaction:           0.01
+HTTP/1.1 201     0.45 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.55 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.58 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.59 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.59 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.63 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.63 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.64 secs:     299 bytes ==> POST http://booking:8080/bookings
+HTTP/1.1 201     0.66 secs:     299 bytes ==> POST http://booking:8080/bookings
 
 ```
-- 요청실패 존재 
-![image](https://user-images.githubusercontent.com/20183369/135557360-83cfb654-8f9c-49a4-a373-499e754cc794.png)
 
-- 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 49% 가 성공하였고, 51%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
+- 요청실패 존재 
+![image](https://user-images.githubusercontent.com/20183369/135558637-e84a9370-0145-4f77-a3b4-6cddff38ae9e.png)
+
+![image](https://user-images.githubusercontent.com/20183369/135558685-f98e88cd-b4c5-4dff-88df-04f5fb674098.png)
+
+
+- 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 98% 가 성공하였고, 2%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
 ## 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
