@@ -31,6 +31,14 @@ spring:
         event-out:
           destination: booking
           contentType: application/json
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 1000
+      
 logging:
   level:
     org.hibernate.type: trace
