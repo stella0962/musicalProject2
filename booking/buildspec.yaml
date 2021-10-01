@@ -97,7 +97,7 @@ phases:
                     livenessProbe:
                       httpGet:
                         path: '/bookings'
-                        port: 9090
+                        port: 8080
                       initialDelaySeconds: 180
                       timeoutSeconds: 2
                       periodSeconds: 5
