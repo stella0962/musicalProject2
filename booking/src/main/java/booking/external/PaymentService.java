@@ -22,12 +22,12 @@ import java.util.Date;
 //@FeignClient(name="payment", url="http://payment:8080")
 //http://a6f9288606f334c0db97a9935ae1bf2a-1991515766.ca-central-1.elb.amazonaws.com:8080
 //${prop.aprv.url}
-@FeignClient(name="approvePay", url="${prop.aprv.url}") //, configuration=PaymentService.PaymentServiceConfiguration.class, fallback=PaymentServiceFallback.class)
+@FeignClient(name="approvePay", url="${prop.aprv.url}") , configuration=PaymentService.PaymentServiceConfiguration.class) //, fallback=PaymentServiceFallback.class)
 public interface PaymentService {
     @RequestMapping(method= RequestMethod.POST, path="/payments")
     public void approvePay(@RequestBody Payment payment);
 
-/*
+
     @Component
     class PaymentServiceConfiguration {
         Feign.Builder feignBuilder(){
@@ -44,6 +44,6 @@ public interface PaymentService {
             return HystrixFeign.builder().setterFactory(setterFactory);
         }
     }
-*/
+
 }
 
