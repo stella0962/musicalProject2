@@ -974,6 +974,16 @@ HTTP/1.1 201     0.66 secs:     299 bytes ==> POST http://booking:8080/bookings
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
 
+```
+booking의 buildspec.yaml에 메모리 설정에 대한 문구 설정
+
+                    resources:
+                      requests:
+                        cpu: "250m"
+                      limits:
+                        cpu: "500m"
+```
+
 - 강좌 관리 및 강자 스케쥴 서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 5프로를 넘어서면 replica 를 10개까지 늘려준다
 ```
 kubectl autoscale deploy booking -n booking --min=1 --max=10 --cpu-percent=5
@@ -988,6 +998,16 @@ watch kubectl get pod,hpa -n booking
 ```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 ```
+kubectl get deploy payment -w -n booking
+```
+-- 증가한다 
+
+![image](https://user-images.githubusercontent.com/20183369/135569598-eed8294a-3272-4eab-8c5c-615dab854c83.png)
+
+
+```
+> kubectl get pod,hpa -n booking 
+
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/booking-6c464f8b49-xpz24    1/1     Running   0          9m58s
 pod/delivery-799557bb66-btdzj   1/1     Running   0          9m57s
