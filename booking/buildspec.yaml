@@ -94,6 +94,14 @@ phases:
                       timeoutSeconds: 2
                       periodSeconds: 5
                       failureThreshold: 10
+                    livenessProbe:
+                      httpGet:
+                        path: '/bookings'
+                        port: 9090
+                      initialDelaySeconds: 180
+                      timeoutSeconds: 2
+                      periodSeconds: 5
+                      failureThreshold: 5
           EOF
 
 cache:
