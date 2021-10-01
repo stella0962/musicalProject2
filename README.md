@@ -992,18 +992,8 @@ kubectl autoscale deploy booking -n booking --min=1 --max=10 --cpu-percent=5
 ```
 siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
 ```
+
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
-```
-watch kubectl get pod,hpa -n booking
-```
-- 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-```
-kubectl get deploy payment -w -n booking
-```
--- > kubectl get pod,hpa -n booking  증가한다 
-
-![image](https://user-images.githubusercontent.com/20183369/135570032-d239e762-eb3c-4952-9574-ac9e997d992e.png)
-
 ```
 root@labs--1458967541:/home/project# watch kubectl get pod,hpa -n booking
 
@@ -1012,6 +1002,15 @@ horizontalpodautoscaler.autoscaling/booking   Deployment/booking   9%/5%   1    
 
 :
 ```
+
+- 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
+```
+kubectl get deploy booking -w -n booking
+```
+-- > kubectl get pod,hpa -n booking  증가한다 
+
+![image](https://user-images.githubusercontent.com/20183369/135570032-d239e762-eb3c-4952-9574-ac9e997d992e.png)
+
 
 
 ## 무정지 재배포
