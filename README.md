@@ -1059,7 +1059,7 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 ![image](https://user-images.githubusercontent.com/88864740/133557236-8a774569-b6cd-4afb-acf2-8dba2e36129f.png)
 
 
-- Restart count 올라간것 확인가능
+- 컨테이너의 상태가 비정상이라고 판단하여, 해당 Pod를 재시작해서 Restart count 올라간것 확인가능
 
 ![image](https://user-images.githubusercontent.com/20183369/135566212-2c62e21f-5285-4bcf-9027-b5ca8cfec74a.png)
 
