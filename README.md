@@ -142,15 +142,15 @@
 
 ### 1차 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 
-![image](https://user-images.githubusercontent.com/49930207/131092558-df5ef712-257b-4aa4-9b49-908db9f13013.png)
+![image](https://user-images.githubusercontent.com/20183369/135548205-5dd4577e-bdfe-4cb8-b7b5-b92d2e75e514.png)
     
     - 수강생이 강의를 신청한다 (ok)
     - 수강생이 강의를 결제한다 (ok)
     - 강의신청이 되면 주문 내역이 배송팀에게 전달된다 (ok)
     - 배송팀에서 강의 교재 배송 출발한다 (ok)
 
-![image](https://user-images.githubusercontent.com/49930207/131092741-a78344ba-3b13-4ed6-a42d-b0ed005727b3.png)
-    
+![image](https://user-images.githubusercontent.com/20183369/135548218-2b89af23-b47d-42c8-b0a4-99ba6301c739.png)
+
     - 수강생이 강의를 취소할 수 있다 (ok) 
     - 강의가 취소되면 결제 취소된다 (ok) 
     - 결제가 취소되면 배송이 취소된다 (ok) 
@@ -165,7 +165,7 @@
 
 ### 비기능 요구사항에 대한 검증
 
-![image](https://user-images.githubusercontent.com/49930207/131438968-8c4913fa-1bf3-4461-8586-234cfa657c2f.png)
+![image](https://user-images.githubusercontent.com/20183369/135548238-8d5ed6f2-268f-410b-b99b-878c1658925e.png)
 
 트랜잭션
 강의 결제가 완료 되어야만 수강 신청 완료 할 수 있음 Sync 호출
@@ -185,7 +185,7 @@
 
 
 ## 헥사고날 아키텍처 다이어그램 도출
-![헥사고날 아키텍쳐 이미지](https://user-images.githubusercontent.com/88864399/133424672-e33313cf-0260-411d-a8f8-1149cb691d22.png)
+![헥사고날_](https://user-images.githubusercontent.com/20183369/135548251-1d45e34d-3fac-4106-aa1c-cef0b39f0e4e.png)
 
 
 
