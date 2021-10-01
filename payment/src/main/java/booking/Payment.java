@@ -19,11 +19,11 @@ public class Payment {
     @PostPersist
     public void onPostPersist(){
         //
-      /* try{
-            Thread.currentThread().sleep((long) (400 + Math.random() * 220));
+       try{
+            Thread.currentThread().sleep((long) (400 + Math.random() * 100));
         } catch (InterruptedException e){
             e.printStackTrace();
-        }*/
+        }
         
         
         PaymentApproved paymentApproved = new PaymentApproved();
