@@ -19,14 +19,14 @@ spec:
           image: 879772956301.dkr.ecr.ca-central-1.amazonaws.com/user22-booking:latest
           ports:
             - containerPort: 8080
-#          readinessProbe:
-#            httpGet:
-#              path: '/actuator/health'
-#              port: 8080
-#            initialDelaySeconds: 10
-#            timeoutSeconds: 2
-#            periodSeconds: 5
-#            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
 #          livenessProbe:
 #            httpGet:
 #              path: '/actuator/health'
