@@ -86,6 +86,11 @@ phases:
                         configMapKeyRef:
                           name: booking-configmap
                           key: apiurl
+                    resources:
+                      requests:
+                        cpu: "250m"
+                      limits:
+                        cpu: "500m"
                     readinessProbe:
                       httpGet:
                         path: '/bookings'
