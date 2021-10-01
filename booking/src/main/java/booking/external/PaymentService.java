@@ -37,9 +37,9 @@ public interface PaymentService {
                     // 아래는 properties 설정
                     .andCommandPropertiesDefaults(HystrixCommandProperties.defaultSetter()
                             .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
-                            .withMetricsRollingStatisticalWindowInMilliseconds(5000) // 기준시간
-                            .withCircuitBreakerSleepWindowInMilliseconds(1000) // 서킷 열려있는 시간
-                            .withCircuitBreakerErrorThresholdPercentage(20)) // 에러 비율 기준 퍼센트
+                            .withMetricsRollingStatisticalWindowInMilliseconds(10000) // 기준시간
+                            .withCircuitBreakerSleepWindowInMilliseconds(3000) // 서킷 열려있는 시간
+                            .withCircuitBreakerErrorThresholdPercentage(50)) // 에러 비율 기준 퍼센트
                     ; // 최소 호출 횟수
             return HystrixFeign.builder().setterFactory(setterFactory);
         }
