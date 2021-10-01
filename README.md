@@ -1028,7 +1028,6 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
             failureThreshold: 10
 
 
-/> kubectl apply -f deployment.yml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
@@ -1040,19 +1039,27 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 
 - buildspec.yaml파일에 Liveness
 
+
+```
+# deployment.yaml 의 readiness probe 의 설정:
+
+# (booking) deployment.yaml 파일
+
+                    livenessProbe:
+                      httpGet:
+                        path: '/bookings'
+                        port: 9090
+                      initialDelaySeconds: 180
+                      timeoutSeconds: 2
+                      periodSeconds: 5
+                      failureThreshold: 5
+
+```
+
 ![image](https://user-images.githubusercontent.com/88864740/133557236-8a774569-b6cd-4afb-acf2-8dba2e36129f.png)
 
 
-- siege 로 Class 서비스 부하주기 (200명 10초 동시접근)
-
-```
-siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
-```
-
-![image](https://user-images.githubusercontent.com/20183369/135565771-763a199c-44df-4b71-882c-84b0c17352a2.png)
-
-
-- 부하 후 Restart count 올라간것 확인가능
+- Restart count 올라간것 확인가능
 
 ![image](https://user-images.githubusercontent.com/20183369/135566212-2c62e21f-5285-4bcf-9027-b5ca8cfec74a.png)
 
