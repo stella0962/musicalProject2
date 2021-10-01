@@ -20,7 +20,7 @@ public class Payment {
     public void onPostPersist(){
         //
        try{
-            Thread.currentThread().sleep((long) (400 + Math.random() * 100));
+            Thread.currentThread().sleep((long) (400 + Math.random() * 500));
         } catch (InterruptedException e){
             e.printStackTrace();
         }
