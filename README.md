@@ -1037,7 +1037,8 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 
 ## Self-healing (Liveness Probe)
 
-- buildspec.yaml파일에 Liveness
+- booking의 buildspec.yaml파일에 Liveness 셋팅
+- 접근실패하여 Restart되는걸 확인하기위해 포트를 9090으로 잘못접근시켜봄
 
 
 ```
