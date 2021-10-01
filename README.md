@@ -1000,25 +1000,16 @@ watch kubectl get pod,hpa -n booking
 ```
 kubectl get deploy payment -w -n booking
 ```
--- 증가한다 
+-- > kubectl get pod,hpa -n booking  증가한다 
 
-![image](https://user-images.githubusercontent.com/20183369/135569598-eed8294a-3272-4eab-8c5c-615dab854c83.png)
-
+![image](https://user-images.githubusercontent.com/20183369/135570032-d239e762-eb3c-4952-9574-ac9e997d992e.png)
 
 ```
-> kubectl get pod,hpa -n booking 
+root@labs--1458967541:/home/project# watch kubectl get pod,hpa -n booking
 
-NAME                            READY   STATUS    RESTARTS   AGE
-pod/booking-6c464f8b49-xpz24    1/1     Running   0          9m58s
-pod/delivery-799557bb66-btdzj   1/1     Running   0          9m57s
-pod/gateway-96d4c4cf9-cbdmd     1/1     Running   0          10m  
-pod/mypage-bfb95df8c-glg5c      1/1     Running   0          9m57s
-pod/payment-74cd874f45-rprmr    1/1     Running   0          9m57s
-pod/siege                       1/1     Running   0          3h5m
-pod/siege-d484db9c-rgtnb        1/1     Running   0          3h3m
+NAME                                          REFERENCE            TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/booking   Deployment/booking   9%/5%   1         10        2          81m
 
-NAME                                          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/booking   Deployment/booking   <unknown>/5%   1         10        1          8m47s
 :
 ```
 
