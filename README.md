@@ -962,6 +962,7 @@ HTTP/1.1 201     0.66 secs:     299 bytes ==> POST http://booking:8080/bookings
 ```
 
 - 요청실패 존재 
+
 ![image](https://user-images.githubusercontent.com/20183369/135558637-e84a9370-0145-4f77-a3b4-6cddff38ae9e.png)
 
 ![image](https://user-images.githubusercontent.com/20183369/135558685-f98e88cd-b4c5-4dff-88df-04f5fb674098.png)
@@ -973,47 +974,32 @@ HTTP/1.1 201     0.66 secs:     299 bytes ==> POST http://booking:8080/bookings
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
 
-- 강좌 관리 및 강자 스케쥴 서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 30프로를 넘어서면 replica 를 10개까지 늘려준다
+- 강좌 관리 및 강자 스케쥴 서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 5프로를 넘어서면 replica 를 10개까지 늘려준다
 ```
-kubectl autoscale deploy class --min=1 --max=10 --cpu-percent=30
+kubectl autoscale deploy booking -n booking --min=1 --max=10 --cpu-percent=5
 ```
 - CB 에서 했던 방식대로 워크로드를 50초 동안 걸어준다. 
 ```
-siege -c50 -t60S -r10 -v --content-type "application/json" 'http://localhost:8081/classes POST {"courseId":2}'
+siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
 ```
-watch kubectl get pod,hpa
+watch kubectl get pod,hpa -n booking
 ```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 ```
-NAME                                        REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/class   Deployment/class   <unknown>/30%   1         10        3          8m53s
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/booking-6c464f8b49-xpz24    1/1     Running   0          9m58s
+pod/delivery-799557bb66-btdzj   1/1     Running   0          9m57s
+pod/gateway-96d4c4cf9-cbdmd     1/1     Running   0          10m  
+pod/mypage-bfb95df8c-glg5c      1/1     Running   0          9m57s
+pod/payment-74cd874f45-rprmr    1/1     Running   0          9m57s
+pod/siege                       1/1     Running   0          3h5m
+pod/siege-d484db9c-rgtnb        1/1     Running   0          3h3m
 
-NAME                           READY   STATUS    RESTARTS   AGE
-pod/class-5cccb78cb5-2gfdp     1/1     Running   11         50m
-pod/course-7489886cf7-jpxcr    1/1     Running   0          21h
-pod/delivery-c7b7d6d7d-w4crq   1/1     Running   0          148m
-pod/gateway-5c8c77f4f7-wfjbh   1/1     Running   0          21h
-pod/mypage-7dbb4cd488-bccw6    1/1     Running   0          50m
-pod/payment-59655b4664-gfgnr   1/1     Running   0          110m
-pod/siege                      1/1     Running   0          77m
+NAME                                          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/booking   Deployment/booking   <unknown>/5%   1         10        1          8m47s
 :
-```
-- siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-```
-Transactions:                  27181 hits
-Availability:                 100.00 %
-Elapsed time:                  59.47 secs
-Data transferred:               8.50 MB
-Response time:                  0.11 secs
-Transaction rate:             457.05 trans/sec
-Throughput:                     0.14 MB/sec
-Concurrency:                   49.04
-Successful transactions:       27181
-Failed transactions:               0
-Longest transaction:            0.79
-Shortest transaction:           0.00
 ```
 
 
@@ -1023,7 +1009,7 @@ Shortest transaction:           0.00
 
 - seige 로 배포작업 직전에 워크로드를 모니터링 함.
 ```
-siege -c200 –t120S  -v -r --content-type "application/json" 'http://localhost:8081/classes POST {"courseId":2}'
+siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
 
 ```
 - readiness probe 
