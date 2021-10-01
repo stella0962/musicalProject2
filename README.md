@@ -1018,21 +1018,21 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 # deployment.yaml 의 readiness probe 의 설정:
 
 # (booking) deployment.yaml 파일
-                    readinessProbe:
-                      httpGet:
-                        path: '/payments'
-                        port: 8080
-                      initialDelaySeconds: 20
-                      timeoutSeconds: 2
-                      periodSeconds: 5
-                      failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
 
 
 /> kubectl apply -f deployment.yml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
-![image](https://user-images.githubusercontent.com/20183369/135553006-25714382-f195-45b5-a6e8-382b08f54017.png)
+![image](https://user-images.githubusercontent.com/20183369/135565500-a0d71d8d-834f-49ad-8875-78fa3ec05c6b.png)
 
 
 ```
@@ -1064,15 +1064,15 @@ Shortest transaction:           0.00
 - siege 로 Class 서비스 부하주기 (200명 10초 동시접근)
 
 ```
-  siege -c200 -t10s -r5 -v --content-type "application/json" 'http://localhost:8081/classes POST {"courseId":2}'
+siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/bookings POST {"telephoneInfo":2}'
 ```
 
+![image](https://user-images.githubusercontent.com/20183369/135565771-763a199c-44df-4b71-882c-84b0c17352a2.png)
 
-![image](https://user-images.githubusercontent.com/20183369/133556725-fef2b6e0-16ce-4cd6-bfe1-5da07164c54d.png)
 
 - 부하 후 Restart count 올라간것 확인가능
 
-![image](https://user-images.githubusercontent.com/20183369/133556797-6f6a5dc9-e105-4a04-9aaf-50722f5438c0.png)
+![image](https://user-images.githubusercontent.com/20183369/135566019-341f2278-0e0a-446e-89bb-51bbf3498328.png)
 
 
 ## ConfigMap
