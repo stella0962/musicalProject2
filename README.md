@@ -1034,24 +1034,6 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
 ![image](https://user-images.githubusercontent.com/20183369/135565500-a0d71d8d-834f-49ad-8875-78fa3ec05c6b.png)
 
-
-```
-Lifting the server siege...
-Transactions:                  28525 hits
-Availability:                 100.00 %
-Elapsed time:                 199.35 secs
-Data transferred:               8.17 MB
-Response time:                  0.21 secs
-Transaction rate:             143.09 trans/sec
-Throughput:                     0.04 MB/sec
-Concurrency:                   29.95
-Successful transactions:       28525
-Failed transactions:               0
-Longest transaction:            4.20
-Shortest transaction:           0.00
-
-```
-
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
 ## Self-healing (Liveness Probe)
@@ -1072,7 +1054,7 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 
 - 부하 후 Restart count 올라간것 확인가능
 
-![image](https://user-images.githubusercontent.com/20183369/135566019-341f2278-0e0a-446e-89bb-51bbf3498328.png)
+![image](https://user-images.githubusercontent.com/20183369/135566212-2c62e21f-5285-4bcf-9027-b5ca8cfec74a.png)
 
 
 ## ConfigMap
