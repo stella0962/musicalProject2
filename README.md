@@ -127,8 +127,8 @@
 ![bounded_image](https://user-images.githubusercontent.com/20183369/135278745-9b8a5f78-a508-43e5-a082-81fb706a3914.png)
 
     - 도메인 서열 분리 
-        - Core Domain:  class, course : 없어서는 안될 핵심 서비스이며, 연견 Up-time SLA 수준을 99.999% 목표, 배포주기는 class 의 경우 1주일 1회 미만, course 의 경우 1개월 1회 미만
-        - General Domain:   payment : 결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음 (핑크색으로 이후 전환할 예정)
+        - Core Domain:  booking : 없어서는 안될 핵심 서비스이며, 연견 Up-time SLA 수준을 99.999% 목표, 배포주기는 booing 의 경우 1주일 1회 미만
+        - General Domain:   payment,delivery : 결제 및 배송서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음 (핑크색으로 이후 전환할 예정)
 
 ### 폴리시의 이동과 컨텍스트 매핑 (점선은 Pub/Sub, 실선은 Req/Resp)
 
