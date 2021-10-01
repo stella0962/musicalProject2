@@ -1031,6 +1031,7 @@ siege -c200 -t50s -r5 -v --content-type "application/json" 'http://booking:8080/
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
+
 ![image](https://user-images.githubusercontent.com/20183369/135565500-a0d71d8d-834f-49ad-8875-78fa3ec05c6b.png)
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
