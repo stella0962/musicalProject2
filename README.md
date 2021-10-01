@@ -934,7 +934,7 @@ feign:
 hystrix:
   command:
     default:
-      execution.isolation.thread.timeoutInMilliseconds: 1000
+      execution.isolation.thread.timeoutInMilliseconds: 610
 ```
 
 * 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
@@ -993,6 +993,9 @@ Longest transaction:            0.84
 Shortest transaction:           0.01
 
 ```
+- 요청실패 존재 
+![image](https://user-images.githubusercontent.com/20183369/135557360-83cfb654-8f9c-49a4-a373-499e754cc794.png)
+
 - 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 49% 가 성공하였고, 51%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
 ## 오토스케일 아웃
